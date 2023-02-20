@@ -1,9 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, ObjectId } from 'mongoose';
-import { User } from 'src/users/schemas/user.schema';
 import { CommentSchema } from './comment.schema';
-import { Ingredient } from 'src/ingredients/interfaces/ingredient.interface';
 
 
 
@@ -23,15 +21,23 @@ export class Recipe {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
   author: ObjectId;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: "Ingredient" }])
-  ingredients: Array<ObjectId>;
+  @Prop(raw({
+    ingredient:{type: mongoose.Schema.Types.ObjectId,ref: "Ingredient"},
+    qty:{type: Number}
+  }))
+  ingredients: [
+    {
+    ingredient:ObjectId,
+    qty: number
+  }
+  ];
 
   @Prop()
   time: number;
 
   @Prop()
   is_private: boolean;
-  
+
   @Prop()
   tags: Array<string>;
 
@@ -41,10 +47,10 @@ export class Recipe {
   @Prop()
   views: number;
 
-  @Prop([String]) 
+  @Prop([String])
   keywords: string[];
 
-  @Prop([CommentSchema]) 
+  @Prop([CommentSchema])
   comments: Comment[];
   @Prop()
   photo: string;
