@@ -11,7 +11,7 @@ export class Badge {
   description: string;
 
     @Prop()
-  requirements: Array<string>;
+  requirements: [{type: string, amount: number}];
 }
 
 export const BadgeSchema = SchemaFactory.createForClass(Badge);
