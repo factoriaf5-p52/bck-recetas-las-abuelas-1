@@ -22,11 +22,14 @@ export class BadgesService {
   }
 
   findOne(id: string) {
-    return this.badgeModel.findOne({ _id: id });
+    return this.badgeModel.findOne({ _id: id })
+    .exec()
   }
 
   update(id: string, updateBadgeDto: UpdateBadgeDto) {
-    return `This action updates a #${id} badge`;
+    return this.badgeModel.findOneAndUpdate({_id: id }, updateBadgeDto, {
+      new: true
+    });
   }
 
   remove(id: string) {

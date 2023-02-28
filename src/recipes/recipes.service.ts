@@ -21,8 +21,9 @@ export class RecipesService {
   async findAll() {
     // return this.recipeModel.find({})
     // .populate("ingredients comments.user", "name")
-    return this.recipeModel.find({}, {"_id": 0, "__v": 0, "is_private": 0})
-    .populate("ingredients", "name")
+    return this.recipeModel.find({}, {"__v": 0, "is_private": 0})
+    .populate("author","username")
+    .populate("ingredients.ingredient", "name")
     .exec();
   }
 
@@ -47,10 +48,10 @@ export class RecipesService {
     return this.recipeModel.findByIdAndRemove({ _id: id }).exec();
   }
 
-  async addComment(id: string, comment: any) { 
-    let commentary: RecipeDocument = await this.recipeModel.findById(id); 
-    commentary.comments.push(comment); 
-    commentary.save(); 
+  async addComment(id: string, comment: any) {
+    let commentary: RecipeDocument = await this.recipeModel.findById(id);
+    commentary.comments.push(comment);
+    commentary.save();
     return commentary;
   }
 
